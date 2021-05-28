@@ -1,6 +1,7 @@
 package com.example.interview.demo.config;
 
 import com.example.interview.demo.model.User;
+import com.example.interview.demo.model.UserDTO;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -51,7 +52,7 @@ public class BatchConfig {
     public Step step() {
         return stepBuilderFactory
                 .get("step")
-                .<User, User>chunk(5)
+                .<UserDTO, User>chunk(5)
                 .reader(reader())
                 .processor(processor())
                 .writer(writer())
@@ -59,13 +60,13 @@ public class BatchConfig {
     }
 
     @Bean
-    public ItemProcessor<User, User> processor() {
-        return new DBLogProcessor();
+    public ItemProcessor<UserDTO, User> processor() {
+        return new UserItemProcessor();
     }
 
     @Bean
-    public FlatFileItemReader<User> reader() {
-        FlatFileItemReader<User> itemReader = new FlatFileItemReader<User>();
+    public FlatFileItemReader<UserDTO> reader() {
+        FlatFileItemReader<UserDTO> itemReader = new FlatFileItemReader<>();
         itemReader.setLineMapper(lineMapper());
         itemReader.setLinesToSkip(1);
         itemReader.setResource(inputResource);
@@ -73,13 +74,13 @@ public class BatchConfig {
     }
 
     @Bean
-    public LineMapper<User> lineMapper() {
-        DefaultLineMapper<User> lineMapper = new DefaultLineMapper<User>();
+    public LineMapper<UserDTO> lineMapper() {
+        DefaultLineMapper<UserDTO> lineMapper = new DefaultLineMapper<UserDTO>();
         DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
         lineTokenizer.setNames("firstName", "lastName", "date");
         lineTokenizer.setIncludedFields(0, 1, 2);
-        BeanWrapperFieldSetMapper<User> fieldSetMapper = new BeanWrapperFieldSetMapper<User>();
-        fieldSetMapper.setTargetType(User.class);
+        BeanWrapperFieldSetMapper<UserDTO> fieldSetMapper = new BeanWrapperFieldSetMapper<UserDTO>();
+        fieldSetMapper.setTargetType(UserDTO.class);
         lineMapper.setLineTokenizer(lineTokenizer);
         lineMapper.setFieldSetMapper(fieldSetMapper);
         return lineMapper;
@@ -93,6 +94,10 @@ public class BatchConfig {
         itemWriter.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<User>());
         return itemWriter;
     }
+
+
+
+
 
     @Bean
     public DataSource dataSource() {

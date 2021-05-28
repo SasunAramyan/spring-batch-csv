@@ -1,14 +1,10 @@
 package com.example.interview.demo.model;
 
-import java.time.LocalDate;
+public class UserDTO {
 
-public class User {
-
-    private String firstName;
-
-    private String lastName;
-
-    private LocalDate date;
+    String firstName;
+    String lastName;
+    String date;
 
     public String getFirstName() {
         return firstName;
@@ -26,16 +22,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
-    }
-
-    @Override
-    public String toString() {
-        return "Employee [date=" + date + ", firstName=" + firstName + ", lastName=" + lastName + "]";
     }
 }
