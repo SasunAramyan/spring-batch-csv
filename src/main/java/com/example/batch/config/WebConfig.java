@@ -1,4 +1,4 @@
-package com.example.interview.demo.config;
+package com.example.batch.config;
 
 import org.h2.server.web.WebServlet;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
