@@ -1,4 +1,4 @@
-package com.example.interview.demo.model;
+package com.example.interview.demo.model.dto;
 
 public class UserDTO {
 
