@@ -1,7 +1,7 @@
-package com.example.interview.unit;
+package com.example.batch.unit;
 
 
-import com.example.interview.bach.config.ZipMultiResourceItemReader;
+import com.example.batch.config.ZipMultiResourceItemReader;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.Resource;

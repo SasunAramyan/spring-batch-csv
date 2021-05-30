@@ -1,10 +1,12 @@
-package com.example.interview.bach.config;
+package com.example.batch.config;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -20,7 +22,7 @@ import org.springframework.core.io.Resource;
 public class ZipMultiResourceItemReader<T> extends MultiResourceItemReader<T> {
 
   private final static Logger logger = LoggerFactory.getLogger(ZipMultiResourceItemReader.class);
-  private final static String TEMP_FILE_PATH = "src/main/resources/input/part.csv";
+  private final static String TEMP_FILE_PATH = "src/main/resources/input/temp";
 
   /**
    * Extract only files from the zip archive.
@@ -35,7 +37,7 @@ public class ZipMultiResourceItemReader<T> extends MultiResourceItemReader<T> {
       ZipEntry zipEntry = zipEntryEnum.nextElement();
       logger.info("extracting: {}", zipEntry.getName());
       if (!zipEntry.isDirectory()) {
-        File fie = new File(TEMP_FILE_PATH);
+        File fie = new File(TEMP_FILE_PATH+ LocalDateTime.now()+".csv");
         InputStream inputStream = currentZipFile.getInputStream(zipEntry);
         try (OutputStream outputStream = new FileOutputStream(fie)) {
           IOUtils.copy(inputStream, outputStream);

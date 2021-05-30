@@ -1,4 +1,4 @@
-package com.example.interview.bach.data.dto;
+package com.example.batch.data.dto;
 
 public class UserCreateDTO {
 

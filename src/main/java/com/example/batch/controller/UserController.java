@@ -1,10 +1,9 @@
-package com.example.interview.bach.controller;
+package com.example.batch.controller;
 
-import com.example.interview.bach.data.dto.UserDTO;
-import com.example.interview.bach.service.UserService;
+import com.example.batch.data.dto.UserDTO;
+import com.example.batch.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;

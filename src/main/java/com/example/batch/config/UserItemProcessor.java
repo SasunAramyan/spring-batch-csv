@@ -1,14 +1,15 @@
-package com.example.interview.bach.config;
+package com.example.batch.config;
 
-import com.example.interview.bach.data.jpa.entity.User;
-import com.example.interview.bach.data.dto.UserCreateDTO;
-import com.example.interview.bach.data.jpa.repository.UserRepository;
-import com.example.interview.bach.util.DateExtractorUtil;
+import com.example.batch.data.jpa.entity.User;
+import com.example.batch.data.dto.UserCreateDTO;
+import com.example.batch.data.jpa.repository.UserRepository;
+import com.example.batch.util.DateExtractorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class UserItemProcessor implements ItemProcessor<UserCreateDTO, User> {
 
@@ -22,7 +23,7 @@ public class UserItemProcessor implements ItemProcessor<UserCreateDTO, User> {
     User user = new User();
     user.setFirstName(userDTO.getFirstName());
     user.setLastName(userDTO.getLastName());
-    LocalDate date = DateExtractorUtil.extractDateWithSuffix(userDTO.getDate());
+    LocalDate date = DateExtractorUtil.extractFromString(userDTO.getDate());
     user.setDate(date);
     logUser(user);
     return user;
