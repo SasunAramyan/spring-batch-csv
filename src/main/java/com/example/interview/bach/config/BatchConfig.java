@@ -1,7 +1,7 @@
-package com.example.interview.demo.config;
+package com.example.interview.bach.config;
 
-import com.example.interview.demo.model.dto.UserDTO;
-import com.example.interview.demo.model.entity.User;
+import com.example.interview.bach.data.dto.UserCreateDTO;
+import com.example.interview.bach.data.jpa.entity.User;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -22,12 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,6 +32,10 @@ import java.util.zip.ZipFile;
 @Configuration
 @EnableBatchProcessing
 public class BatchConfig {
+
+  private final static String ZIP_FILE_PATH = "src/main/resources/input/data.zip";
+  private final static String WRITER_SQL = "INSERT INTO USER ( FIRSTNAME, LASTNAME ,DATE) VALUES ( :firstName, :lastName ,:date)";
+  private final static int CHUNK_SIZE = 5;
 
   @Autowired
   private JobBuilderFactory jobBuilderFactory;
@@ -55,15 +54,15 @@ public class BatchConfig {
     return jobBuilderFactory
         .get("readCSVFileJob")
         .incrementer(new RunIdIncrementer())
-        .start(step())
+        .start(step1())
         .build();
   }
 
   @Bean
-  public Step step() throws IOException {
+  public Step step1() throws IOException {
     return stepBuilderFactory
         .get("step")
-        .<UserDTO, User>chunk(5)
+        .<UserCreateDTO, User>chunk(CHUNK_SIZE)
         .reader(reader())
         .processor(processor())
         .writer(writer())
@@ -71,16 +70,16 @@ public class BatchConfig {
   }
 
   @Bean
-  public ItemProcessor<UserDTO, User> processor() {
+  public ItemProcessor<UserCreateDTO, User> processor() {
     return new UserItemProcessor();
   }
 
   @Bean
-  public MultiResourceItemReader<UserDTO> reader() throws IOException {
+  public MultiResourceItemReader<UserCreateDTO> reader() throws IOException {
     List<Resource> resources = new ArrayList<>();
-    ZipMultiResourceItemReader.extractFiles(new ZipFile(new File("src/main/resources/input/data.zip")), resources);
-    MultiResourceItemReader<UserDTO> multiResourceItemReader = new MultiResourceItemReader<>();
-    FlatFileItemReader<UserDTO> itemReader = new FlatFileItemReader<>();
+    ZipMultiResourceItemReader.extractFiles(new ZipFile(new File(ZIP_FILE_PATH)), resources);
+    MultiResourceItemReader<UserCreateDTO> multiResourceItemReader = new MultiResourceItemReader<>();
+    FlatFileItemReader<UserCreateDTO> itemReader = new FlatFileItemReader<>();
     itemReader.setLineMapper(lineMapper());
     itemReader.setLinesToSkip(1);
     itemReader.setResource(inputResource);
@@ -90,13 +89,13 @@ public class BatchConfig {
   }
 
   @Bean
-  public LineMapper<UserDTO> lineMapper() {
-    DefaultLineMapper<UserDTO> lineMapper = new DefaultLineMapper<UserDTO>();
+  public LineMapper<UserCreateDTO> lineMapper() {
+    DefaultLineMapper<UserCreateDTO> lineMapper = new DefaultLineMapper<UserCreateDTO>();
     DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
     lineTokenizer.setNames("firstName", "lastName", "date");
     lineTokenizer.setIncludedFields(0, 1, 2);
-    BeanWrapperFieldSetMapper<UserDTO> fieldSetMapper = new BeanWrapperFieldSetMapper<UserDTO>();
-    fieldSetMapper.setTargetType(UserDTO.class);
+    BeanWrapperFieldSetMapper<UserCreateDTO> fieldSetMapper = new BeanWrapperFieldSetMapper<UserCreateDTO>();
+    fieldSetMapper.setTargetType(UserCreateDTO.class);
     lineMapper.setLineTokenizer(lineTokenizer);
     lineMapper.setFieldSetMapper(fieldSetMapper);
     return lineMapper;
@@ -106,11 +105,9 @@ public class BatchConfig {
   public JdbcBatchItemWriter<User> writer() {
     JdbcBatchItemWriter<User> itemWriter = new JdbcBatchItemWriter<User>();
     itemWriter.setJdbcTemplate(namedParameterJdbcTemplate);
-    itemWriter.setSql("INSERT INTO USER ( FIRSTNAME, LASTNAME ,DATE) VALUES ( :firstName, :lastName ,:date)");
+    itemWriter.setSql(WRITER_SQL);
     itemWriter.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<User>());
     return itemWriter;
   }
-
-
 
 }

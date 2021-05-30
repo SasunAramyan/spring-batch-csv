@@ -26,11 +26,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-batch</artifactId>
         </dependency>
@@ -49,10 +44,25 @@
             <artifactId>javax.servlet-api</artifactId>
         </dependency>
 
+        <!--    test dependencies-->
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.8.0</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <artifactId>junit-jupiter-params</artifactId>
             <groupId>org.junit.jupiter</groupId>
             <version>5.4.2</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 
@@ -65,13 +75,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>repository.spring.release</id>
-            <name>Spring GA Repository</name>
-            <url>http://repo.spring.io/release</url>
-        </repository>
-    </repositories>
 
 </project>

@@ -1,6 +1,6 @@
-package com.example.interview.demo.model.dto;
+package com.example.interview.bach.data.dto;
 
-public class UserDTO {
+public class UserCreateDTO {
 
     String firstName;
     String lastName;

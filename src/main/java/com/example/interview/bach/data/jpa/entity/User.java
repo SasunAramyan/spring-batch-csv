@@ -1,4 +1,4 @@
-package com.example.interview.demo.model.entity;
+package com.example.interview.bach.data.jpa.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
