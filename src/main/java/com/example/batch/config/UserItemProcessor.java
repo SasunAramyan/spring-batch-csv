@@ -12,11 +12,7 @@ import java.time.LocalDate;
 
 public class UserItemProcessor implements ItemProcessor<UserCreateDTO, User> {
 
-  @Autowired
-  UserRepository userRepository;
-
   private final static Logger logger = LoggerFactory.getLogger(UserItemProcessor.class);
-
 
   public User process(UserCreateDTO userDTO) {
     User user = new User();
