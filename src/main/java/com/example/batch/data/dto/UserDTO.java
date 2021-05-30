@@ -1,6 +1,6 @@
 package com.example.batch.data.dto;
 
-public class UserDTO  extends UserCreateDTO{
+public class UserDTO extends UserCreateDTO {
 
   private Long id;
 

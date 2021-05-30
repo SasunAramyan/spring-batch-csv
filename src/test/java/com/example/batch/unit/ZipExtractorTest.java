@@ -17,7 +17,7 @@ class ZipExtractorTest {
   void zipExtractorTest() throws IOException {
 
     List<Resource> resources = new ArrayList<>();
-		ZipMultiResourceItemReader.extractFiles(new ZipFile("src/main/resources/input/data.zip"), resources);
+    ZipMultiResourceItemReader.extractFiles(new ZipFile("src/main/resources/input/data.zip"), resources);
     Assertions.assertThat(resources).hasSize(2);
     Assertions.assertThat(resources.get(0).getDescription()).isEqualTo("file [/home/sasun/IdeaProjects/spring-batch-csv/src/main/resources/input/part.csv]");
     Assertions.assertThat(resources.get(1).getDescription()).isEqualTo("file [/home/sasun/IdeaProjects/spring-batch-csv/src/main/resources/input/part.csv]");
