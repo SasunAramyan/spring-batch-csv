@@ -2,13 +2,18 @@ package com.example.interview.demo.config;
 
 import com.example.interview.demo.model.entity.User;
 import com.example.interview.demo.model.dto.UserDTO;
+import com.example.interview.demo.model.entity.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemProcessor;
+import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class UserItemProcessor implements ItemProcessor<UserDTO, User> {
+
+  @Autowired
+  UserRepository userRepository;
 
   private final static Logger logger = LoggerFactory.getLogger(UserItemProcessor.class);
 

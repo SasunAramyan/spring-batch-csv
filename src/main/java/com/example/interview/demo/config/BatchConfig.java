@@ -22,6 +22,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import javax.sql.DataSource;
@@ -38,6 +41,8 @@ public class BatchConfig {
   @Autowired
   private JobBuilderFactory jobBuilderFactory;
 
+  @Autowired
+  private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
   @Autowired
   private StepBuilderFactory stepBuilderFactory;
@@ -100,6 +105,7 @@ public class BatchConfig {
   @Bean
   public JdbcBatchItemWriter<User> writer() {
     JdbcBatchItemWriter<User> itemWriter = new JdbcBatchItemWriter<User>();
+    itemWriter.setJdbcTemplate(namedParameterJdbcTemplate);
     itemWriter.setSql("INSERT INTO USER ( FIRSTNAME, LASTNAME ,DATE) VALUES ( :firstName, :lastName ,:date)");
     itemWriter.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<User>());
     return itemWriter;

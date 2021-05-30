@@ -1,5 +1,6 @@
 package com.example.interview.demo.model.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,10 +16,13 @@ public class User {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(name = "FIRSTNAME")
   private String firstName;
 
+  @Column(name = "LASTNAME")
   private String lastName;
 
+  @Column(name = "DATE")
   private LocalDate date;
 
   public String getFirstName() {
